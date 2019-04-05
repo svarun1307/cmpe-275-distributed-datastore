@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+service Fileservice {
+	
+	rpc UploadFile (stream FileData) returns (ack);
+	rpc DownloadFile (FileInfo) returns (stream FileData);
+	rpc FileSearch (FileInfo) returns (ack);
+	rpc ReplicateFile (stream FileData) returns (ack);
+	rpc FileList (UserInfo) returns (FileListResponse);
+	rpc FileDelete (FileInfo) returns (ack);
+	rpc UpdateFile (stream FileData) returns (ack);
+	rpc metadataUpdate (metadataInfo) returns (ack);
+}
+
+
+message metadataInfo {
+	string username = 1;
+	string filename =2;
+	string chunk_id=3;
+	string destination =4;
+}
+
+message FileData {
+	string username = 1;
+	string filename =2;
+	bytes data =3;
+	int64 chunk_id=4;
+}
+
+message ack {
+	bool success =1;
+	string message = 2;
+}
+
+message UserInfo {
+	string username=1;
+}
+
+message FileInfo {
+	string username = 1;
+	string filename = 2;
+}
+
+message FileListResponse {
+	string Filenames =1;
+}

@@ -1,0 +1,55 @@
+{
+  "user_1" : {
+    "files" : {
+          "file_name_1":
+              [
+                {
+                  "chunk_node": 1,
+                  "chunk_number": 1.1
+                },
+                {
+                  "chunk_node": 2,
+                  "chunk_number": 1.2
+                },
+                {
+                  "chunk_node": 3,
+                  "chunk_number": 1.3
+                }
+              ],
+          "file_name_2":
+              [
+                {
+                  "chunk_node": 1,
+                  "chunk_number": 1.1
+                },
+                {
+                  "chunk_node": 2,
+                  "chunk_number": 1.2
+                },
+                {
+                  "chunk_node": 3,
+                  "chunk_number": 1.3
+                }
+              ]
+      }
+  },
+  "user_2" : {
+    "files" : {
+          "file_name_1":
+              [
+                {
+                  "chunk_node": 1,
+                  "chunk_number": 1.1
+                },
+                {
+                  "chunk_node": 2,
+                  "chunk_number": 1.2
+                },
+                {
+                  "chunk_node": 3,
+                  "chunk_number": 1.3
+                }
+              ]
+      }
+  }
+}
