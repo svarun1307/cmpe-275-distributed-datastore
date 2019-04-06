@@ -83,7 +83,10 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
             print(metadata)
             for item in metadata:
                 if item[1]==self.serverAddress:
-                    print("heloo")
+                    fname= filename+str(item[0])
+                    result= self.databaseHandlerObj.getData(username,fname)
+                    yield fileService_pb2.FileData(username=result[0], filename= filename, data=result[2], chunk_id= int(item[0]))
+
                 else:
                     data= self.getDataFromNode(username, filename, item[0], item [1])
                     for d in data:
