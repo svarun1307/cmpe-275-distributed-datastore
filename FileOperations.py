@@ -34,41 +34,28 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
     
     def UploadFile(self, request_iterator, context):
         global chunk_id
-        print(self.leader)
         activeIpList = self.activeNodeObj.getActiveIpsDict()
         if self.leader:
-            print("I am the leader")
             chunk_id=0
             for chunk in request_iterator:
-                print("chunk"+chunk.username)
                 username= chunk.username
                 filename = chunk.filename
                 destination= self.nodeSelect.leastUtilizedNode()
                 if destination==9999:
                     return fileService_pb2.ack(success=False, message="No active nodes!")
                 if str(destination)==str(self.serverAddress):
-                    print("data stored on primary")
                     chunk_id+=1
-                    print("Active IP List:")
-                    ##metadata broadcast
                     self.databaseHandlerObj.insertData(chunk.username, chunk.filename+str(chunk_id), chunk.data)
                     self.broadcastMetadata(chunk.username, chunk.filename, str(chunk_id), str(destination))
 
                 else:
                     chunk_id+=1
-                    print(chunk_id)
                     self.sendDataToDestination(chunk, destination, chunk_id)
-                    print("Active IP List:")
-                    for ip in activeIpList:
-                        print(ip)
-                        #pickledbMetadataobj.insertData(username,)
-
-
+                    
             return fileService_pb2.ack(success=True, message="Saved data!")
 
         else:
             for request in request_iterator:
-                print("data stored on"+request.username)
                 self.databaseHandlerObj.insertData(request.username, request.filename+str(request.chunk_id), request.data)
                 self.broadcastMetadata(request.username, request.filename, str(request.chunk_id), str(self.serverAddress))
                 return fileService_pb2.ack(success=True, message="Data has been saved!")
@@ -78,9 +65,7 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
         username=request_iterator.username
         filename=request_iterator.filename
         if(self.leader):
-            print("I am the leader")
             metadata= self.pickledbMetadataobj.getData(username,filename)
-            print(metadata)
             for item in metadata:
                 if item[1]==self.serverAddress:
                     fname= filename+str(item[0])
@@ -102,7 +87,6 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
         channel2= self.activeNodeObj.getActiveIpsDict()[destination]
         stub = fileService_pb2_grpc.FileserviceStub(channel2)
         response= stub.DownloadFile(fileService_pb2.FileInfo(username=username, filename=str(filename+chunk_id), sequence_no=str(chunk_id)))
-        print(response)
         return response
         #for r in response:
         #    yield r
@@ -130,8 +114,7 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
         for ip,channel in activeIpList.items():
             stub= fileService_pb2_grpc.FileserviceStub(channel)
             response= stub.metadataUpdate(fileService_pb2.metadataInfo(username=username, filename=filename, chunk_id=chunk_id, destination=destination))
-            print(response)
-
+            
     def metadataUpdate(self, request, context):
         self.pickledbMetadataobj.insertData(request.username, request.filename, request.chunk_id, request.destination)
         return fileService_pb2.ack(success=True, message="MetaData has been saved!")

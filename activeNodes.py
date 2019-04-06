@@ -44,8 +44,6 @@ class activeNodes():
 		self.channel_ip_map={}
 		self.returnIPList()
 		self.createChannels()
-		print("channel map")
-		print(self.channel_ip_map)
 		#time.sleep(3)
 
 	def isChannelAlive(self, channel):

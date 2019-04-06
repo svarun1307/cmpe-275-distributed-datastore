@@ -18,7 +18,7 @@ class Heartbeat(heartbeat_pb2_grpc.HearBeatServicer):
     def isAlive(self, request, context):
          cpu_usage = str(psutil.cpu_percent())
          disk_space = str(psutil.virtual_memory()[2])
-         used_mem = str(psutil.disk_usage('/home/akshay/Android')[3])
+         used_mem = str(psutil.disk_usage('/')[3])
          info = heartbeat_pb2.Stats(cpu_usage = cpu_usage, disk_space = disk_space, used_mem = used_mem)
          return info
 

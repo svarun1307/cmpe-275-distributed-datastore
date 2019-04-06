@@ -24,10 +24,12 @@ class nodeSelect():
 			stub = heartbeat_pb2_grpc.HearBeatStub(channel)
 			response = stub.isAlive(heartbeat_pb2.NodeInfo())
 			self.dummy.append((response.disk_space, response.used_mem, response.cpu_usage, ip))
+			
 		if len(self.dummy)==0:
 			return 9999;
-		print("dummy", self.dummy)
+
 		a=sorted(self.dummy,key=lambda x: (x[0], x[1]))
+		#self.dummy.sort(key=lambda x: (x[0], x[1]))
 		return a[0][3]
 
 if __name__ == '__main__':
