@@ -22,8 +22,12 @@ class pickledbMetadata():
 			self.db.dump()	 
 			self.filedata={}
 
-	def getData(self, username):
-		print(self.db.get(username))
+	def getData(self, username,filename):
+		if not self.db.get(username)[filename]:
+			return False
+		else:
+			print(self.db.get(username)[filename])
+			return self.db.get(username)[filename]
 
 if __name__ == '__main__':
 	obj= pickledbMetadata("server3000")
@@ -31,4 +35,4 @@ if __name__ == '__main__':
 	obj.insertData("akshay", "ruhi", "2", "3000")
 	obj.insertData("akshay", "shubham", "1", "3000")
 	obj.insertData("saket", "varun", "1", "3000")
-	obj.getData("akshay")
+	obj.getData("akshay","ruhi")

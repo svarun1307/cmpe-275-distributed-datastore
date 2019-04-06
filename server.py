@@ -18,7 +18,7 @@ activeNodeObj= activeNodes()
 
 def serve():
     leader=True
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1000))
     if sys.argv[1] != str(3000):
         leader=False
     serverAddress= '127.0.0.1:'+sys.argv[1]

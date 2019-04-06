@@ -15,9 +15,10 @@ class databaseHandler():
 	def getData(self,username, filename):
 		myquery = {"filename": filename, "username":username}
 		mydoc = self.collection.find(myquery)
-
+		print("mydoc")
+		print(mydoc)
 		for x in mydoc:
-			print(x)
+			return (x["username"], x["filename"], x["data"])
 
 
 if __name__ == '__main__':

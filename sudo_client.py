@@ -21,10 +21,6 @@ def get_file_chunks(filename):
 
 def save_chunks(chunks, filename):
     i=0
-    global mycursor 
-    global query
-    global cnx
-    global data
     for chunk in chunks:
         with open(filename+str(i), 'wb') as f:
             if data.get(filename,None)==None:
@@ -39,6 +35,10 @@ def save_chunks(chunks, filename):
     print(data[filename][0])
 
 
+def save_chunks_to_file(chunks, filename):
+    with open(filename, 'wb') as f:
+        for chunk in chunks:
+            f.write(chunk.data)
 
 def client():
     while True: 
@@ -52,13 +52,15 @@ def client():
             print(response)
         elif choice==2:
             name= input("Name of file to download")
-            channel = grpc.insecure_channel('localhost:3000')
-            stub = fluffy_pb2_grpc.FileserviceStub(channel)
-            response = stub.DownloadFile(fluffy_pb2.FileInfo(fileName=name))
-            save_chunks_to_file(response, "downloads/"+name)
+            channel = grpc.insecure_channel('127.0.0.1:3000')
+            stub = fileService_pb2_grpc.FileserviceStub(channel)
+            response = stub.DownloadFile(fileService_pb2.FileInfo(username="akshay", filename=name))
+            save_chunks_to_file(response, "downloads/Downloaded.jpg")
             print("File downloaded. ")
         
 
 
 if __name__ == '__main__':
-    client()
+    t3 = threading.Thread(target=client)
+    t3.start()
+    t3.join()

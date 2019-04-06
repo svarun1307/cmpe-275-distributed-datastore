@@ -39,6 +39,7 @@ message UserInfo {
 message FileInfo {
 	string username = 1;
 	string filename = 2;
+	string sequence_no=3;
 }
 
 message FileListResponse {
