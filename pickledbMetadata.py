@@ -17,8 +17,9 @@ class pickledbMetadata():
 			if a.get(filename):
 				a.get(filename).append((chunk_id, node))
 			else:
-				self.filedata[filename]=[(chunk_id, node)]
-				a[filename]=self.filedata
+				self.db[username][filename]=[(chunk_id, node)]
+				#self.filedata[filename]=[(chunk_id, node)]
+				#a[filename]=self.filedata
 			self.db.dump()	 
 			self.filedata={}
 
@@ -34,5 +35,6 @@ if __name__ == '__main__':
 	obj.insertData("akshay", "ruhi", "1", "3000")
 	obj.insertData("akshay", "ruhi", "2", "3000")
 	obj.insertData("akshay", "shubham", "1", "3000")
+	obj.insertData("akshay", "shubham", "2", "3000")
 	obj.insertData("saket", "varun", "1", "3000")
 	obj.getData("akshay","ruhi")

@@ -16,6 +16,7 @@ class nodeSelect():
 		self.dummy= []
 		activeNodeObj.channelRefresh()
 		self.activeIpList = activeNodeObj.getActiveIpsDict()
+		print(self.activeIpList)
 		
 	def leastUtilizedNode(self):
 		min= float("-inf")

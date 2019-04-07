@@ -21,11 +21,11 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1000))
     if sys.argv[1] != str(3000):
         leader=False
-    serverAddress= '169.254.46.132:'+sys.argv[1]
+    serverAddress= '127.0.0.1:'+sys.argv[1]
     print("Server started on" +  sys.argv[1])
     heartbeat_pb2_grpc.add_HearBeatServicer_to_server(Heartbeat(), server)
     fileService_pb2_grpc.add_FileserviceServicer_to_server(FileService(leader, serverAddress, activeNodeObj), server)
-    server.add_insecure_port('169.254.46.132:'+sys.argv[1])
+    server.add_insecure_port('127.0.0.1:'+sys.argv[1])
     server.start()
     try:
         while True:

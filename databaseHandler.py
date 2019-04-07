@@ -10,13 +10,11 @@ class databaseHandler():
 	def insertData(self,username, filename, data):
 		mydict = { "username": username, "filename": filename ,"data" :data }
 		x= self.collection.insert_one(mydict)
-		print(x.inserted_id)
-
+		print(x)
+		
 	def getData(self,username, filename):
 		myquery = {"filename": filename, "username":username}
 		mydoc = self.collection.find(myquery)
-		print("mydoc")
-		print(mydoc)
 		for x in mydoc:
 			return (x["username"], x["filename"], x["data"])
 

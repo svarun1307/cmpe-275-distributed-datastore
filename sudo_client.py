@@ -9,7 +9,7 @@ import fileService_pb2
 import fileService_pb2_grpc
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
-CHUNK_SIZE= 3*1024*1024
+CHUNK_SIZE= 1024*1024
 
 def get_file_chunks(filename):
     with open(filename, 'rb') as f:
@@ -43,14 +43,14 @@ def client():
     while True: 
         choice= int(input("What operation: 1. Upload 2. Download"))
         if choice==1:
-            channel = grpc.insecure_channel('169.254.46.132:3000')
+            channel = grpc.insecure_channel('127.0.0.1:3000')
             fileName=input("FileName to be uploaded: ")
             chunk_generator= get_file_chunks(fileName)
             stub = fileService_pb2_grpc.FileserviceStub(channel)
             response = stub.UploadFile(chunk_generator)
             print(response)
         elif choice==2:
-            channel = grpc.insecure_channel('169.254.46.132:3000')
+            channel = grpc.insecure_channel('127.0.0.1:3000')
             name= input("Name of file to download")
             stub = fileService_pb2_grpc.FileserviceStub(channel)
             response = stub.DownloadFile(fileService_pb2.FileInfo(username="akshay", filename=name))

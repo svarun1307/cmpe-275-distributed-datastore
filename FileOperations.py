@@ -20,8 +20,6 @@ from databaseHandler import databaseHandler
 from pickledbMetadata import pickledbMetadata
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
-chunk_id=0
-
 class FileService(fileService_pb2_grpc.FileserviceServicer):
     def __init__(self, leader, serverAddress,activeNodeObj):
         self.leader= leader
@@ -33,7 +31,6 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
 
     
     def UploadFile(self, request_iterator, context):
-        global chunk_id
         activeIpList = self.activeNodeObj.getActiveIpsDict()
         if self.leader:
             chunk_id=0
@@ -119,10 +116,4 @@ class FileService(fileService_pb2_grpc.FileserviceServicer):
         self.pickledbMetadataobj.insertData(request.username, request.filename, request.chunk_id, request.destination)
         return fileService_pb2.ack(success=True, message="MetaData has been saved!")
 
-    def isChannelAlive(self, channel):
-        try:
-            grpc.channel_ready_future(channel).result(timeout=1)
-        except grpc.FutureTimeoutError:
-            #print("Connection timeout. Unable to connect to port ")
-            return False
-        return True
+    
