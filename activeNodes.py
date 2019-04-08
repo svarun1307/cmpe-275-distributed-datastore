@@ -22,7 +22,14 @@ class activeNodes():
 		with open("valid_ip.txt","r") as ins:
 			for line in ins:
 				self.ip_list.append(line.strip())
-    	
+
+	def isChannelAlive(self, channel):
+		# try:
+		# 	grpc.channel_ready_future(channel).result(timeout=1)
+		# except grpc.FutureTimeoutError:
+		# 	return False
+		return True
+
 	def createChannels(self):
 		for ip in self.ip_list:
 		# 	if(self.channel_ip_map.get(ip,None) != None):
@@ -34,8 +41,11 @@ class activeNodes():
 		# 			del self.channel_ip_map[ip]
 		# 	else:
 			channel= grpc.insecure_channel(''+ip)
-			self.channel_ip_map[ip]=channel
-			self.reverse_map[channel]=ip
+			if self.isChannelAlive(channel):
+				self.channel_ip_map[ip]=channel
+				self.reverse_map[channel]=ip
+			else:
+				continue
 
 
 	def channelRefresh(self):
@@ -46,12 +56,7 @@ class activeNodes():
 		self.createChannels()
 		#time.sleep(3)
 
-	def isChannelAlive(self, channel):
-		try:
-			grpc.channel_ready_future(channel).result(timeout=1)
-		except grpc.FutureTimeoutError:
-			return False
-		return True
+	
 
 	def getActiveIpsDict(self):
 		self.channelRefresh()

@@ -29,6 +29,39 @@ class pickledbMetadata():
 		else:
 			print(self.db.get(username)[filename])
 			return self.db.get(username)[filename]
+	
+	def getFileList(self, username):
+		a= self.db.get(username)
+		if not a:
+			return ""
+		fileList = ""
+		for key,value in a.items():
+			fileList += key+','
+		if len(fileList) == 0:
+			return ""
+		result = fileList[:-1]
+		return result
+	
+	def getFileData(self, username):
+		if not self.db.get(username):
+			return False
+		else:
+			print(self.db.get(username))
+			return self.db.get(username)
+
+	def deleteData(self, username, filename):
+		if not self.db.get(username):
+			print("usename not present")
+		else:
+			a= self.db.get(username)
+			if a.get(filename):
+				del a[filename]
+			else:
+				print("file not found in metadata")
+				#self.db[username][filename]=[(chunk_id, node)]
+				#self.filedata[filename]=[(chunk_id, node)]
+				#a[filename]=self.filedata
+			self.db.dump()
 
 if __name__ == '__main__':
 	obj= pickledbMetadata("server3000")

@@ -17,6 +17,11 @@ class databaseHandler():
 		mydoc = self.collection.find(myquery)
 		for x in mydoc:
 			return (x["username"], x["filename"], x["data"])
+	
+	def deleteData(self, username, filename):
+		myquery = {"filename": filename, "username":username}
+		mydoc = self.collection.delete_many(myquery)
+		print(mydoc.deleted_count)
 
 
 if __name__ == '__main__':
